@@ -9,16 +9,12 @@ export class ClassroomRepository {
     return await Classroom.create(classroom);
   }
 
-  // async getAllClassrooms(): Promise<Classroom[]> {
-  //   return await Classroom.findAll();
-  // }
-
   async getAllClassrooms(): Promise<Classroom[]> {
     return await Classroom.findAll({
       include: [
         {
           model: Student,
-          required: false
+          required: false,
         },
       ],
     });
@@ -42,11 +38,8 @@ export class ClassroomRepository {
   async getClassOccupancy(classroomId: string): Promise<number> {
     const occupancy = await Student.count({
       where: { classroomId: classroomId },
-    })
+    });
 
     return occupancy;
   }
-
-
-
 }

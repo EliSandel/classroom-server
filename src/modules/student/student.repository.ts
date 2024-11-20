@@ -4,11 +4,10 @@ import { CreateStudentDto } from './dto/createStudent.dto';
 
 @Injectable()
 export class StudentsRepository {
-
   async createStudent(student: CreateStudentDto): Promise<Student> {
     return Student.create(student);
   }
-  
+
   async findAllStudents(): Promise<Student[]> {
     return await Student.findAll();
   }
@@ -21,22 +20,24 @@ export class StudentsRepository {
     return await Student.destroy({ where: { id: studentId } });
   }
 
-  async addStudentToClass(classroomId: string, studentId: string): Promise<Student> {
-    const [affectedStudentsCount, updatedStudents ] = await Student.update(
+  async addStudentToClass(
+    classroomId: string,
+    studentId: string,
+  ): Promise<Student> {
+    const [affectedStudentsCount, updatedStudents] = await Student.update(
       { classroomId: classroomId },
-      { where: { id: studentId }, returning: true }
-    )
+      { where: { id: studentId }, returning: true },
+    );
 
-    return updatedStudents[0]
+    return updatedStudents[0];
   }
 
   async removeStudentFromClassroom(studentId: string) {
-    const [affectedStudentsCount, updatedStudents ] = await Student.update(
+    const [affectedStudentsCount, updatedStudents] = await Student.update(
       { classroomId: null },
       { where: { id: studentId }, returning: true },
-    ) 
+    );
 
-    return updatedStudents[0]
+    return updatedStudents[0];
   }
-
 }

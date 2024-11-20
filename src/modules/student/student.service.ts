@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Student } from './entities/student.entity';
 import { StudentsRepository } from './student.repository';
 import { CreateStudentDto } from './dto/createStudent.dto';
@@ -12,7 +16,9 @@ export class StudentsService {
       return await this.studentsRepository.createStudent(student);
     } catch (error) {
       if (error.name === 'SequelizeUniqueConstraintError') {
-        throw new ConflictException(`Student with ID: ${student.id} already exists.`);
+        throw new ConflictException(
+          `Student with ID: ${student.id} already exists.`,
+        );
       }
       throw new Error('An unexpected error occurred while adding the student.');
     }
@@ -23,7 +29,8 @@ export class StudentsService {
   }
 
   async deleteSpecificStudent(studentId: string) {
-    const deletedCount = await this.studentsRepository.deleteStudentById(studentId);
+    const deletedCount =
+      await this.studentsRepository.deleteStudentById(studentId);
     if (deletedCount === 0) {
       throw new NotFoundException('student ' + studentId + ' doesnt exist');
     }
@@ -38,13 +45,17 @@ export class StudentsService {
     return student;
   }
 
-  async addStudentToClass(classroomId: string, studentId: string): Promise<Student> {
-    return await this.studentsRepository.addStudentToClass(classroomId, studentId);
+  async addStudentToClass(
+    classroomId: string,
+    studentId: string,
+  ): Promise<Student> {
+    return await this.studentsRepository.addStudentToClass(
+      classroomId,
+      studentId,
+    );
   }
 
   async removeStudentFromClassroom(studentId: string) {
     return await this.studentsRepository.removeStudentFromClassroom(studentId);
   }
-
 }
-
