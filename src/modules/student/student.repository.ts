@@ -24,7 +24,7 @@ export class StudentsRepository {
     classroomId: string,
     studentId: string,
   ): Promise<Student> {
-    const [affectedStudentsCount, updatedStudents] = await Student.update(
+    const [updatedStudents] = await Student.update(
       { classroomId: classroomId },
       { where: { id: studentId }, returning: true },
     );
@@ -33,7 +33,7 @@ export class StudentsRepository {
   }
 
   async removeStudentFromClassroom(studentId: string) {
-    const [affectedStudentsCount, updatedStudents] = await Student.update(
+    const [updatedStudents] = await Student.update(
       { classroomId: null },
       { where: { id: studentId }, returning: true },
     );

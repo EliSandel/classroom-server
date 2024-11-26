@@ -16,24 +16,22 @@ export class ClassroomService {
     private readonly studentService: StudentsService,
   ) {}
 
-  async getStudentList(classId: string): Promise<Classroom | null> {
-    const classroom = await this.classroomRepository.getStudentsInClassroom(classId);
-    if (!classroom) {
-      throw new NotFoundException(
-        'classroom with ID: ' + classId + "doesn't exist.",
-      );
-    }
-    return classroom;
-  }
-
   async addClass(classData: CreateClassroomDto): Promise<Classroom> {
     try {
-      return await this.classroomRepository.createClassroom(classData);
+      const response =
+        await this.classroomRepository.createClassroom(classData);
+      response.setDataValue('students', []);
+      console.log('response ', response);
+      return response;
     } catch (error) {
       if (error.name === 'SequelizeUniqueConstraintError') {
-        throw new ConflictException(`Classroom with ID: ${classData.id} already exists.`);
+        throw new ConflictException(
+          `Classroom with ID: ${classData.id} already exists.`,
+        );
       }
-      throw new Error('An unexpected error occurred while adding the classroom.');
+      throw new Error(
+        'An unexpected error occurred while adding the classroom.',
+      );
     }
   }
 
@@ -46,7 +44,7 @@ export class ClassroomService {
     if (!classroom) {
       throw new NotFoundException(`Classroom ${classId} not found`);
     }
-    if (await this.classroomRepository.getClassOccupancy(classId) !== 0) {
+    if ((await this.classroomRepository.getClassOccupancy(classId)) !== 0) {
       throw new BadRequestException(
         'class must be empty in order to delete it',
       );
@@ -63,17 +61,23 @@ export class ClassroomService {
     return classroom;
   }
 
-  async addStudentToClass(classroomId: string, studentId: string) {      
-
+  async addStudentToClass(classroomId: string, studentId: string) {
     const student = await this.studentService.getSpecificStudent(studentId);
     const classroom = await this.getSpecificClass(classroomId);
 
     if (student.classroomId) {
-      throw new ConflictException(`Student with id ${studentId} is already assigned to a class.`)
+      throw new ConflictException(
+        `Student with id ${studentId} is already assigned to a class.`,
+      );
     }
 
-    if (await this.classroomRepository.getClassOccupancy(classroomId) >= classroom.maxOccupancy) {
-      throw new ConflictException(`Classroom ${classroom.name} is at full occupancy`)
+    if (
+      (await this.classroomRepository.getClassOccupancy(classroomId)) >=
+      classroom.maxOccupancy
+    ) {
+      throw new ConflictException(
+        `Classroom ${classroom.name} is at full occupancy`,
+      );
     }
 
     await this.studentService.addStudentToClass(classroomId, studentId);
@@ -84,11 +88,11 @@ export class ClassroomService {
     const classroom = await this.getSpecificClass(classroomId);
 
     if (student.classroomId !== classroom.id) {
-      throw new ConflictException(`Cannot remove student ${studentId} from class ${classroomId} because student is not enrolled to that class.`)
+      throw new ConflictException(
+        `Cannot remove student ${studentId} from class ${classroomId} because student is not enrolled to that class.`,
+      );
     }
 
     await this.studentService.removeStudentFromClassroom(studentId);
   }
-
 }
- 

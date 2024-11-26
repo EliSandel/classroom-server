@@ -20,12 +20,11 @@ export const databaseProviders = [
         sequelize.addModels([Student, Classroom]);
         await sequelize.sync();
 
-        console.log("successfully connected to database");
+        console.log('successfully connected to database');
         return sequelize;
-        
       } catch (error) {
         console.error('Unable to connect to the database:', error);
-        throw error; 
+        throw error;
       }
     },
   },

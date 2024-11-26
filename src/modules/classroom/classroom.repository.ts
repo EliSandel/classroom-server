@@ -20,13 +20,6 @@ export class ClassroomRepository {
     });
   }
 
-  async getStudentsInClassroom(classId: string): Promise<Classroom | null> {
-    return await Classroom.findOne({
-      where: { id: classId },
-      include: [Student],
-    });
-  }
-
   async getClassroomById(classroomId: string): Promise<Classroom | null> {
     return await Classroom.findByPk(classroomId);
   }

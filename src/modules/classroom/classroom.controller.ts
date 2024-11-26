@@ -2,13 +2,13 @@ import { ClassroomService } from './classroom.service';
 import { Classroom } from './entities/classroom.entity';
 import { CreateClassroomDto } from './dto/createClassroom.dto';
 import {
-  Body,
-  Controller,
-  Delete,
   Get,
-  Param,
-  Post,
   Put,
+  Body,
+  Post,
+  Param,
+  Delete,
+  Controller,
 } from '@nestjs/common';
 
 @Controller('classrooms')
@@ -33,11 +33,6 @@ export class ClassesController {
     return {
       message: 'classroom with ID: ' + classId + ' was successfilly deleted.',
     };
-  }
-
-  @Get(':classId/students')
-  async getStudentList(@Param('classId') classId: string) {
-    return await this.classroomService.getStudentList(classId);
   }
 
   @Put(':classId/addStudent/:studentId')
