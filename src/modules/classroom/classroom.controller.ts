@@ -1,6 +1,3 @@
-import { ClassroomService } from './classroom.service';
-import { Classroom } from './entities/classroom.entity';
-import { CreateClassroomDto } from './dto/createClassroom.dto';
 import {
   Get,
   Put,
@@ -10,6 +7,9 @@ import {
   Delete,
   Controller,
 } from '@nestjs/common';
+import { ClassroomService } from './classroom.service';
+import { Classroom } from './entities/classroom.entity';
+import { CreateClassroomDto } from './dto/createClassroom.dto';
 
 @Controller('classrooms')
 export class ClassesController {

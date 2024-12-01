@@ -1,5 +1,12 @@
+import {
+  Model,
+  Table,
+  Column,
+  DataType,
+  BelongsTo,
+  ForeignKey,
+} from 'sequelize-typescript';
 import { Classroom } from '../../classroom/entities/classroom.entity';
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 
 @Table
 export class Student extends Model<Student> {

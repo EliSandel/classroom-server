@@ -1,1 +1,1 @@
-export * from "./classroomWithOccupancy";
+export * from './classroomWithOccupancy';

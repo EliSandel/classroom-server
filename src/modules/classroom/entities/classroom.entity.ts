@@ -1,5 +1,5 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { Student } from '../../student/entities/student.entity';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
 @Table
 export class Classroom extends Model<Classroom> {
