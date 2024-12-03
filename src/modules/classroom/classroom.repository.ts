@@ -11,6 +11,7 @@ export class ClassroomRepository {
 
   async getAllClassrooms(): Promise<Classroom[]> {
     return await Classroom.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
       include: [
         {
           model: Student,
@@ -21,10 +22,12 @@ export class ClassroomRepository {
   }
 
   async getClassroomById(classroomId: string): Promise<Classroom | null> {
-    return await Classroom.findByPk(classroomId);
+    return await Classroom.findByPk(classroomId, {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
   }
 
-  async deleteSpecificClass(classroomId: string) {
+  async deleteSpecificClass(classroomId: string): Promise<number> {
     return await Classroom.destroy({ where: { id: classroomId } });
   }
 
