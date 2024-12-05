@@ -1,22 +1,15 @@
-// import { NestFactory } from '@nestjs/core';
-// import { AppModule } from './app.module';
-
-// async function bootstrap() {
-//   const app = await NestFactory.create(AppModule);
-//   await app.listen(3000);
-// }
-// bootstrap();
-
-import { NestFactory } from '@nestjs/core';
+import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
 
 async function bootstrap() {
+  dotenv.config();
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'http://localhost:5173', // Replace with your React app's URL
+    origin: process.env.ORIGIN_URL,
     methods: 'GET,POST,PUT,DELETE',
-    credentials: true, // If you're using cookies or Authorization headers
+    credentials: true,
   });
-  await app.listen(3000);
+  await app.listen(Number(process.env.BACKEND_PORT));
 }
 bootstrap();

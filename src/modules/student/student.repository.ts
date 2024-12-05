@@ -9,11 +9,15 @@ export class StudentsRepository {
   }
 
   async findAllStudents(): Promise<Student[]> {
-    return await Student.findAll();
+    return await Student.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
   }
 
   async findStudentById(id: string): Promise<Student | null> {
-    return await Student.findByPk(id);
+    return await Student.findByPk(id, {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
   }
 
   async deleteStudentById(studentId: string): Promise<number> {
