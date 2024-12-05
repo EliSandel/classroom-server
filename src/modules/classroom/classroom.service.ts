@@ -21,7 +21,6 @@ export class ClassroomService {
       const response =
         await this.classroomRepository.createClassroom(classData);
       response.setDataValue('students', []);
-      console.log('response ', response);
       return response;
     } catch (error) {
       if (error.name === 'SequelizeUniqueConstraintError') {
