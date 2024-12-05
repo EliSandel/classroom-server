@@ -15,7 +15,7 @@ import { CreateClassroomDto } from './dto/createClassroom.dto';
 export class ClassesController {
   constructor(private readonly classroomService: ClassroomService) {}
 
-  @Post('addClassroom')
+  @Post()
   async addClass(
     @Body() createClassDto: CreateClassroomDto,
   ): Promise<Classroom> {

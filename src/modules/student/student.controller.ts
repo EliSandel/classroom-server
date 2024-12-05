@@ -7,7 +7,7 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
-  @Post('addStudent')
+  @Post()
   async addStudent(
     @Body() createStudentDto: CreateStudentDto,
   ): Promise<Student> {

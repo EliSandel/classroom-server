@@ -12,8 +12,8 @@ import { CreateClassroomDto } from './dto/createClassroom.dto';
 @Injectable()
 export class ClassroomService {
   constructor(
-    private readonly classroomRepository: ClassroomRepository,
     private readonly studentService: StudentsService,
+    private readonly classroomRepository: ClassroomRepository,
   ) {}
 
   async addClass(classData: CreateClassroomDto): Promise<Classroom> {
@@ -61,8 +61,8 @@ export class ClassroomService {
   }
 
   async addStudentToClass(classroomId: string, studentId: string) {
-    const student = await this.studentService.getSpecificStudent(studentId);
     const classroom = await this.getSpecificClass(classroomId);
+    const student = await this.studentService.getSpecificStudent(studentId);
 
     if (student.classroomId) {
       throw new ConflictException(
@@ -83,8 +83,8 @@ export class ClassroomService {
   }
 
   async removeStudentFromClassroom(classroomId: string, studentId: string) {
-    const student = await this.studentService.getSpecificStudent(studentId);
     const classroom = await this.getSpecificClass(classroomId);
+    const student = await this.studentService.getSpecificStudent(studentId);
 
     if (student.classroomId !== classroom.id) {
       throw new ConflictException(
