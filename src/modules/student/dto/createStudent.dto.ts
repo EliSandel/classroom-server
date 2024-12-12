@@ -8,6 +8,7 @@ import {
   IsNumberString,
 } from 'class-validator';
 
+//there exists a validation (class validator) for taz
 export class CreateStudentDto {
   @IsNotEmpty()
   @IsString()
@@ -22,7 +23,7 @@ export class CreateStudentDto {
   @IsNotEmpty()
   @IsString()
   lastname: string;
-
+  //optional
   @IsInt()
   @Min(0, { message: 'Age must be a positive integer.' })
   age: number;
@@ -31,6 +32,7 @@ export class CreateStudentDto {
   @IsString()
   profession: string;
 
+  //dont need this
   @IsString()
   @IsOptional()
   classroomId?: string;

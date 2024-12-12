@@ -17,12 +17,15 @@ export class ClassroomService {
   ) {}
 
   async addClass(classData: CreateClassroomDto): Promise<Classroom> {
+    //remove students array
     try {
       const response =
         await this.classroomRepository.createClassroom(classData);
       response.setDataValue('students', []);
       return response;
     } catch (error) {
+      //move error types and messages to const
+      //instanceof
       if (error.name === 'SequelizeUniqueConstraintError') {
         throw new ConflictException(
           `Classroom with ID: ${classData.id} already exists.`,
@@ -39,10 +42,13 @@ export class ClassroomService {
   }
 
   async deleteSpecificClass(classId: string) {
+    //unneccessary check. use delete return 0/1
     const classroom = await this.classroomRepository.getClassroomById(classId);
     if (!classroom) {
       throw new NotFoundException(`Classroom ${classId} not found`);
     }
+    //move request to const
+    //not instead of comparing to 0
     if ((await this.classroomRepository.getClassOccupancy(classId)) !== 0) {
       throw new BadRequestException(
         'class must be empty in order to delete it',
@@ -51,6 +57,7 @@ export class ClassroomService {
     return await this.classroomRepository.deleteSpecificClass(classId);
   }
 
+  //uneccessary function
   async getSpecificClass(classId: string): Promise<Classroom> {
     const classroom = await this.classroomRepository.getClassroomById(classId);
     if (!classroom) {
@@ -70,6 +77,7 @@ export class ClassroomService {
       );
     }
 
+    //move occupancy to const
     if (
       (await this.classroomRepository.getClassOccupancy(classroomId)) >=
       classroom.maxOccupancy

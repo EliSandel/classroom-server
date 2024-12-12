@@ -21,13 +21,13 @@ export class ClassesController {
   ): Promise<Classroom> {
     return await this.classroomService.addClass(createClassDto);
   }
-
-  @Get()
+  //explicit return types
+  @Get() //getAll
   async getAllClasses(): Promise<Classroom[]> {
     return await this.classroomService.getAllClasses();
   }
 
-  @Delete(':classId')
+  @Delete(':classId') //unneccessary return
   async deleteSpecificClass(@Param('classId') classId: string) {
     await this.classroomService.deleteSpecificClass(classId);
     return {
@@ -35,7 +35,8 @@ export class ClassesController {
     };
   }
 
-  @Put(':classId/addStudent/:studentId')
+  //patch
+  @Put(':classId/addStudent/:studentId') //pass params in body. create dto
   async addStudentToClass(
     @Param('classId') classId: string,
     @Param('studentId') studentId: string,
@@ -43,7 +44,7 @@ export class ClassesController {
     await this.classroomService.addStudentToClass(classId, studentId);
   }
 
-  @Put(':classId/removeStudent/:studentId')
+  @Put(':classId/removeStudent/:studentId') //pass params in body. create dto
   async removeStudentFromClass(
     @Param('classId') classId: string,
     @Param('studentId') studentId: string,

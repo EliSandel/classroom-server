@@ -9,6 +9,7 @@ export class ClassroomRepository {
     return await Classroom.create(classroom);
   }
 
+  // move exclude options to const
   async getAllClassrooms(): Promise<Classroom[]> {
     return await Classroom.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -21,6 +22,7 @@ export class ClassroomRepository {
     });
   }
 
+  //join with students and use this function when adding to class
   async getClassroomById(classroomId: string): Promise<Classroom | null> {
     return await Classroom.findByPk(classroomId, {
       attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -31,9 +33,10 @@ export class ClassroomRepository {
     return await Classroom.destroy({ where: { id: classroomId } });
   }
 
+  //change function to classroom and use join
   async getClassOccupancy(classroomId: string): Promise<number> {
     const occupancy = await Student.count({
-      where: { classroomId: classroomId },
+      where: { classroomId },
     });
 
     return occupancy;

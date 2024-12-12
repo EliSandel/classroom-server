@@ -31,6 +31,8 @@ export class StudentsService {
   async deleteSpecificStudent(studentId: string) {
     const deletedCount =
       await this.studentsRepository.deleteStudentById(studentId);
+    //!!
+    //change const name
     if (deletedCount === 0) {
       throw new NotFoundException('student ' + studentId + ' doesnt exist');
     }
