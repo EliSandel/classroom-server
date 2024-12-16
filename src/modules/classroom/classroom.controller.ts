@@ -36,7 +36,7 @@ export class ClassesController {
     @Param('classId') classId: string,
     @Param('studentId') studentId: string,
   ) {
-    await this.classroomService.assignStudent(classId, studentId);
+    return await this.classroomService.assignStudent(classId, studentId);
   }
 
   @Patch(':classId/removeStudent/:studentId') //pass params in body. create dto
@@ -44,6 +44,6 @@ export class ClassesController {
     @Param('classId') classId: string,
     @Param('studentId') studentId: string,
   ) {
-    await this.classroomService.unassignStudent(classId, studentId);
+    return await this.classroomService.unassignStudent(classId, studentId);
   }
 }

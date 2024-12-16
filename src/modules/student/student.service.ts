@@ -11,9 +11,9 @@ import { CreateStudentDto } from './dto/createStudent.dto';
 export class StudentsService {
   constructor(private readonly studentsRepository: StudentsRepository) {}
 
-  async addStudent(student: CreateStudentDto): Promise<Student> {
+  async create(student: CreateStudentDto): Promise<Student> {
     try {
-      return await this.studentsRepository.createStudent(student);
+      return await this.studentsRepository.create(student);
     } catch (error) {
       if (error.name === 'SequelizeUniqueConstraintError') {
         throw new ConflictException(
@@ -24,22 +24,21 @@ export class StudentsService {
     }
   }
 
-  async getAllStudents(): Promise<Student[]> {
-    return await this.studentsRepository.findAllStudents();
+  async getAll(): Promise<Student[]> {
+    return await this.studentsRepository.getAll();
   }
 
-  async deleteSpecificStudent(studentId: string) {
-    const deletedCount =
-      await this.studentsRepository.deleteStudentById(studentId);
+  async deleteById(studentId: string) {
+    const amountOfStudentsDeleted =
+      await this.studentsRepository.deleteById(studentId);
     //!!
-    //change const name
-    if (deletedCount === 0) {
+    if (amountOfStudentsDeleted === 0) {
       throw new NotFoundException('student ' + studentId + ' doesnt exist');
     }
   }
 
-  async getSpecificStudent(studentId: string): Promise<Student> {
-    const student = await this.studentsRepository.findStudentById(studentId);
+  async getById(studentId: string): Promise<Student> {
+    const student = await this.studentsRepository.getById(studentId);
     if (!student) {
       throw new NotFoundException(`Student with ID ${studentId} not found`);
     }
@@ -47,17 +46,14 @@ export class StudentsService {
     return student;
   }
 
-  async addStudentToClass(
+  async assignToClass(
     classroomId: string,
     studentId: string,
   ): Promise<Student> {
-    return await this.studentsRepository.addStudentToClass(
-      classroomId,
-      studentId,
-    );
+    return await this.studentsRepository.assignToClass(classroomId, studentId);
   }
 
-  async removeStudentFromClassroom(studentId: string) {
-    return await this.studentsRepository.removeStudentFromClassroom(studentId);
+  async unassignFromClassroom(studentId: string) {
+    return await this.studentsRepository.unassignFromClassroom(studentId);
   }
 }

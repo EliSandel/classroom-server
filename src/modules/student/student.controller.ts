@@ -8,20 +8,18 @@ export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
-  async addStudent(
-    @Body() createStudentDto: CreateStudentDto,
-  ): Promise<Student> {
-    return await this.studentsService.addStudent(createStudentDto);
+  async create(@Body() createStudentDto: CreateStudentDto): Promise<Student> {
+    return await this.studentsService.create(createStudentDto);
   }
 
   @Get()
-  async getAllStudents(): Promise<Student[]> {
-    return await this.studentsService.getAllStudents();
+  async getAll(): Promise<Student[]> {
+    return await this.studentsService.getAll();
   }
 
   @Delete(':studentId')
-  async deleteSpecificStudent(@Param('studentId') studentId: string) {
-    await this.studentsService.deleteSpecificStudent(studentId);
+  async deleteById(@Param('studentId') studentId: string) {
+    await this.studentsService.deleteById(studentId);
     return {
       message: 'Student with ID: ' + studentId + 'deleted successfully',
     };

@@ -68,7 +68,7 @@ export class ClassroomService {
 
   async assignStudent(classroomId: string, studentId: string) {
     const classroom = await this.getById(classroomId);
-    const student = await this.studentService.getSpecificStudent(studentId);
+    const student = await this.studentService.getById(studentId);
 
     if (student.classroomId) {
       throw new ConflictException(
@@ -84,12 +84,12 @@ export class ClassroomService {
       );
     }
 
-    await this.studentService.addStudentToClass(classroomId, studentId);
+    await this.studentService.assignToClass(classroomId, studentId);
   }
 
   async unassignStudent(classroomId: string, studentId: string) {
     const classroom = await this.getById(classroomId);
-    const student = await this.studentService.getSpecificStudent(studentId);
+    const student = await this.studentService.getById(studentId);
 
     if (student.classroomId !== classroom.id) {
       throw new ConflictException(
@@ -97,6 +97,6 @@ export class ClassroomService {
       );
     }
 
-    await this.studentService.removeStudentFromClassroom(studentId);
+    await this.studentService.unassignFromClassroom(studentId);
   }
 }
