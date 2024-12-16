@@ -1,26 +1,28 @@
+import {
+  Table,
+  Column,
+  Model,
+  HasMany,
+  DataType,
+  AllowNull,
+  PrimaryKey,
+} from 'sequelize-typescript';
 import { IClassroom } from '../interfaces/classroom.interface';
 import { Student } from '../../student/entities/student.entity';
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
 @Table
 export class Classroom extends Model<IClassroom> implements IClassroom {
-  //pk and allow null to @
-  @Column({
-    type: DataType.STRING,
-    primaryKey: true,
-  })
+  @PrimaryKey
+  @AllowNull(false)
+  @Column(DataType.STRING)
   id: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
+  @AllowNull(false)
+  @Column(DataType.STRING)
   name: string;
 
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
   maxOccupancy: number;
 
   @HasMany(() => Student)

@@ -29,7 +29,7 @@ export class StudentsRepository {
     studentId: string,
   ): Promise<Student> {
     const [updatedStudents] = await Student.update(
-      { classroomId: classroomId },
+      { classroomId },
       { where: { id: studentId }, returning: true },
     );
 

@@ -5,47 +5,38 @@ import {
   DataType,
   BelongsTo,
   ForeignKey,
+  PrimaryKey,
+  AllowNull,
 } from 'sequelize-typescript';
 import { IStudent } from '../interfaces/student.interface';
 import { Classroom } from '../../classroom/entities/classroom.entity';
 
 @Table
 export class Student extends Model<IStudent> implements IStudent {
-  @Column({
-    type: DataType.STRING,
-    primaryKey: true,
-  })
+  @PrimaryKey
+  @AllowNull(false)
+  @Column(DataType.STRING)
   id: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
+  @AllowNull(false)
+  @Column(DataType.STRING)
   firstName: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
+  @AllowNull(false)
+  @Column(DataType.STRING)
   lastName: string;
 
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
   age: number;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
+  @AllowNull(false)
+  @Column(DataType.STRING)
   profession: string;
 
+  @AllowNull(true)
   @ForeignKey(() => Classroom)
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
+  @Column(DataType.STRING)
   classroomId: string;
 
   @BelongsTo(() => Classroom)
