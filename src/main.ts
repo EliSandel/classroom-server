@@ -9,7 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
     origin: process.env.ORIGIN_URL,
-    methods: 'GET,POST,PUT,DELETE',
+    methods: 'GET,POST,DELETE,PATCH',
     credentials: true,
   });
   await app.listen(Number(process.env.BACKEND_PORT));

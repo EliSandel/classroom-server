@@ -40,15 +40,15 @@ export class ClassroomService {
     return await this.classroomRepository.getAll();
   }
 
-  async deleteById(classId: string) {
+  async deleteById(classId: string): Promise<number> {
     //unneccessary check. use delete return 0/1
     const classroom = await this.classroomRepository.getById(classId);
     if (!classroom) {
       throw new NotFoundException(`Classroom ${classId} not found`);
     }
-    //move request to const
     //not instead of comparing to 0
-    if ((await this.classroomRepository.getOccupancy(classId)) !== 0) {
+    const occupancy = await this.classroomRepository.getOccupancy(classId);
+    if (occupancy !== 0) {
       throw new BadRequestException(
         'class must be empty in order to delete it',
       );

@@ -1,8 +1,9 @@
+import { IClassroom } from '../interfaces/classroom.interface';
 import { Student } from '../../student/entities/student.entity';
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
-@Table //make interface
-export class Classroom extends Model<Classroom> {
+@Table
+export class Classroom extends Model<IClassroom> implements IClassroom {
   //pk and allow null to @
   @Column({
     type: DataType.STRING,

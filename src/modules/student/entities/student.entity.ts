@@ -6,10 +6,11 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
+import { IStudent } from '../interfaces/student.interface';
 import { Classroom } from '../../classroom/entities/classroom.entity';
 
 @Table
-export class Student extends Model<Student> {
+export class Student extends Model<IStudent> implements IStudent {
   @Column({
     type: DataType.STRING,
     primaryKey: true,
