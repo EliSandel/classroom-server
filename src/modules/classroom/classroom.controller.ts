@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { ClassroomService } from './classroom.service';
 import { Classroom } from './entities/classroom.entity';
+import { AssignStudentDto } from './dto/assign-student.dto';
 import { CreateClassroomDto } from './dto/createClassroom.dto';
+import { UnassignStudentDto } from './dto/unassign-student.dto';
 
 @Controller('classrooms')
 export class ClassesController {
@@ -20,7 +22,6 @@ export class ClassesController {
     return await this.classroomService.create(createClassDto);
   }
 
-  //explicit return types
   @Get()
   async getAll(): Promise<Classroom[]> {
     return await this.classroomService.getAll();
@@ -31,19 +32,15 @@ export class ClassesController {
     return await this.classroomService.deleteById(classId);
   }
 
-  @Patch(':classId/addStudent/:studentId') //pass params in body. create dto
-  async assignStudent(
-    @Param('classId') classId: string,
-    @Param('studentId') studentId: string,
-  ) {
-    return await this.classroomService.assignStudent(classId, studentId);
+  @Patch('assign-student')
+  async assignStudent(@Body() assignStudentDto: AssignStudentDto) {
+    const { classroomId, studentId } = assignStudentDto;
+    return await this.classroomService.assignStudent(classroomId, studentId);
   }
 
-  @Patch(':classId/removeStudent/:studentId') //pass params in body. create dto
-  async unassignStudent(
-    @Param('classId') classId: string,
-    @Param('studentId') studentId: string,
-  ) {
-    return await this.classroomService.unassignStudent(classId, studentId);
+  @Patch('unassign-student')
+  async unassignStudent(@Body() unassignStudentDto: UnassignStudentDto) {
+    const { classroomId, studentId } = unassignStudentDto;
+    return await this.classroomService.unassignStudent(classroomId, studentId);
   }
 }

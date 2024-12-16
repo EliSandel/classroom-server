@@ -3,7 +3,9 @@ import {
   ConflictException,
   NotFoundException,
   BadRequestException,
+  InternalServerErrorException,
 } from '@nestjs/common';
+import { UniqueConstraintError } from 'sequelize';
 import { Classroom } from './entities/classroom.entity';
 import { ClassroomRepository } from './classroom.repository';
 import { StudentsService } from '../student/student.service';
@@ -17,20 +19,16 @@ export class ClassroomService {
   ) {}
 
   async create(classData: CreateClassroomDto): Promise<Classroom> {
-    //remove students array
     try {
-      const response = await this.classroomRepository.create(classData);
-      response.setDataValue('students', []);
-      return response;
+      return await this.classroomRepository.create(classData);
     } catch (error) {
       //move error types and messages to const
-      //instanceof
-      if (error.name === 'SequelizeUniqueConstraintError') {
+      if (error instanceof UniqueConstraintError) {
         throw new ConflictException(
           `Classroom with ID: ${classData.id} already exists.`,
         );
       }
-      throw new Error(
+      throw new InternalServerErrorException(
         'An unexpected error occurred while adding the classroom.',
       );
     }
@@ -41,22 +39,22 @@ export class ClassroomService {
   }
 
   async deleteById(classId: string): Promise<number> {
-    //unneccessary check. use delete return 0/1
-    const classroom = await this.classroomRepository.getById(classId);
-    if (!classroom) {
-      throw new NotFoundException(`Classroom ${classId} not found`);
-    }
-    //not instead of comparing to 0
     const occupancy = await this.classroomRepository.getOccupancy(classId);
-    if (occupancy !== 0) {
+
+    if (occupancy > 0) {
       throw new BadRequestException(
         'class must be empty in order to delete it',
       );
     }
-    return await this.classroomRepository.deleteById(classId);
+    const deleteCount = await this.classroomRepository.deleteById(classId);
+
+    if (!deleteCount) {
+      throw new NotFoundException(`Classroom ${classId} not found.`);
+    }
+
+    return deleteCount;
   }
 
-  //uneccessary function
   async getById(classId: string): Promise<Classroom> {
     const classroom = await this.classroomRepository.getById(classId);
     if (!classroom) {
