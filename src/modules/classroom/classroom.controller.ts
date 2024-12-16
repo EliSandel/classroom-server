@@ -1,9 +1,9 @@
 import {
   Get,
-  Put,
   Body,
   Post,
   Param,
+  Patch,
   Delete,
   Controller,
 } from '@nestjs/common';
@@ -16,39 +16,34 @@ export class ClassesController {
   constructor(private readonly classroomService: ClassroomService) {}
 
   @Post()
-  async addClass(
-    @Body() createClassDto: CreateClassroomDto,
-  ): Promise<Classroom> {
-    return await this.classroomService.addClass(createClassDto);
+  async create(@Body() createClassDto: CreateClassroomDto): Promise<Classroom> {
+    return await this.classroomService.create(createClassDto);
   }
+
   //explicit return types
-  @Get() //getAll
-  async getAllClasses(): Promise<Classroom[]> {
-    return await this.classroomService.getAllClasses();
+  @Get()
+  async getAll(): Promise<Classroom[]> {
+    return await this.classroomService.getAll();
   }
 
-  @Delete(':classId') //unneccessary return
-  async deleteSpecificClass(@Param('classId') classId: string) {
-    await this.classroomService.deleteSpecificClass(classId);
-    return {
-      message: 'classroom with ID: ' + classId + ' was successfilly deleted.',
-    };
+  @Delete(':classId')
+  async deleteById(@Param('classId') classId: string): Promise<number> {
+    return await this.classroomService.deleteById(classId);
   }
 
-  //patch
-  @Put(':classId/addStudent/:studentId') //pass params in body. create dto
-  async addStudentToClass(
+  @Patch(':classId/addStudent/:studentId') //pass params in body. create dto
+  async assignStudent(
     @Param('classId') classId: string,
     @Param('studentId') studentId: string,
   ) {
-    await this.classroomService.addStudentToClass(classId, studentId);
+    await this.classroomService.assignStudent(classId, studentId);
   }
 
-  @Put(':classId/removeStudent/:studentId') //pass params in body. create dto
-  async removeStudentFromClass(
+  @Patch(':classId/removeStudent/:studentId') //pass params in body. create dto
+  async unassignStudent(
     @Param('classId') classId: string,
     @Param('studentId') studentId: string,
   ) {
-    await this.classroomService.removeStudentFromClassroom(classId, studentId);
+    await this.classroomService.unassignStudent(classId, studentId);
   }
 }

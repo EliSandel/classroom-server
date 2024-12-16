@@ -5,12 +5,12 @@ import { CreateClassroomDto } from './dto/createClassroom.dto';
 
 @Injectable()
 export class ClassroomRepository {
-  async createClassroom(classroom: CreateClassroomDto): Promise<Classroom> {
+  async create(classroom: CreateClassroomDto): Promise<Classroom> {
     return await Classroom.create(classroom);
   }
 
   // move exclude options to const
-  async getAllClassrooms(): Promise<Classroom[]> {
+  async getAll(): Promise<Classroom[]> {
     return await Classroom.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt'] },
       include: [
@@ -23,18 +23,18 @@ export class ClassroomRepository {
   }
 
   //join with students and use this function when adding to class
-  async getClassroomById(classroomId: string): Promise<Classroom | null> {
+  async getById(classroomId: string): Promise<Classroom | null> {
     return await Classroom.findByPk(classroomId, {
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
   }
 
-  async deleteSpecificClass(classroomId: string): Promise<number> {
+  async deleteById(classroomId: string): Promise<number> {
     return await Classroom.destroy({ where: { id: classroomId } });
   }
 
   //change function to classroom and use join
-  async getClassOccupancy(classroomId: string): Promise<number> {
+  async getOccupancy(classroomId: string): Promise<number> {
     const occupancy = await Student.count({
       where: { classroomId },
     });
